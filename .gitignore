@@ -1,0 +1,28 @@
+# Python (Arquivos compilados e cache)
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+
+# Poetry e Ambientes Virtuais (Essencial)
+.venv/
+
+# Django (Banco de dados local e mídias)
+db.sqlite3
+db.sqlite3-journal
+/media/
+/static/
+
+# Configurações de IDEs (VS Code, PyCharm)
+.vscode/
+.idea/
+
+# Sistema Operacional (Debian/Linux e Mac)
+.DS_Store
+.directory
+*~
+*.swp
+
+# Arquivos de variáveis de ambiente (Segurança)
+.env
