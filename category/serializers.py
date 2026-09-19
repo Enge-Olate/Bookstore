@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from .models import Category
-from validators import validate_non_blank_title, validate_description
+from validators import validate_non_blank_title, validate_description, validate_title_null
 
 class CategorySerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=200, validators=[validate_non_blank_title])
+    title = serializers.CharField(max_length=200, validators=[validate_non_blank_title, validate_title_null])
     description = serializers.CharField(validators=[validate_description])
 
     class Meta:

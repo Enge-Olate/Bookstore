@@ -9,17 +9,13 @@ class OrderSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=True)
     
     
-    product = serializers.ListField(
-        child=serializers.IntegerField(min_value=1),
-        required=True,
-        allow_empty=False,
-    )
+    
     quantity = serializers.IntegerField(min_value=1, required=True)
     status = serializers.CharField(required=True)
 
     class Meta:
         model = Order
-        fields = ["id", "user", "product", "quantity", "total", "status"]
+        fields = ["id", "user", "quantity", "total", "status"]
         
     
     def to_internal_value(self, data):
