@@ -6,10 +6,11 @@ from ..serializers import ProductSerializer
 
 class ProductSerializerTestCase(TestCase):
     def test_serializer_acceptes_valid_data(self):
-        category = Category.objects.create(title="Eletrônicos")
+
+        category = Category.objects.create(title="Tecnologia da Informação")
         data = {
-            "title": "Teclado REdragon Kumara K552 RGB LED ABNT2",
-            "description": "Teclado Mecânico Gamer Redragon Kumara K552 RGB LED ABNT2 Switch Outemu Blue, Black",
+            "title": "A cor dos Dados",
+            "description": "Editora Novatec, 2019. 1ª edição. 256 páginas.",
             "price": "280.00",
             "active": True,
             "category": [category.pk],
@@ -18,9 +19,10 @@ class ProductSerializerTestCase(TestCase):
         self.assertTrue(serializer.is_valid(), serializer.errors)
 
     def test_serializer_requires_title(self):
-        category = Category.objects.create(title = "Switches")
+
+        category = Category.objects.create(title = "Informática")
         data = {
-            "description": "Teclado Mecânico Gamer Redragon Kumara K552 RGB LED ABNT2 Switch Outemu Blue, Black",
+            "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
             "price": "280.00",
             "active": True,
             "category": [category.pk],
@@ -30,10 +32,10 @@ class ProductSerializerTestCase(TestCase):
         self.assertIn("title", self.serializer.errors)
 
     def test_serializer_price_not_negative(self):
-        category = Category.objects.create(title="Routers")
+        category = Category.objects.create(title="Tecnologia da Informação")
         data = {
-            "title": "Teclado REdragon Kumara K552 RGB LED ABNT2",
-            "description": "Teclado Mecânico Gamer Redragon Kumara K552 RGB LED ABNT2 Switch Outemu Blue, Black",
+            "title": "A cor dos Dados",
+            "description": "Editora Novatec, 2019. 1ª edição. 256 páginas.",
             "price": "-10.00",
             "active": True,
             "category": [category.pk],
@@ -43,11 +45,11 @@ class ProductSerializerTestCase(TestCase):
         self.assertIn("price", self.serializer.errors)
 
     def test_serializer_create_product(self):
-        category = Category.objects.create(title="Periféricos")
+        category = Category.objects.create(title="Tecnologia da Informação")
         data = {
-            "title": "Mouse Gamer Logitech G203 RGB",
-            "description": "Mouse gamer com sensor óptico.",
-            "price": "160.00",
+            "title": "A cor dos Dados",
+            "description": "Editora Novatec, 2019. 1ª edição. 256 páginas.",
+            "price": "280.00",
             "active": True,
             "category": [category.pk],
         }

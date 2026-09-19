@@ -6,9 +6,9 @@ class CategorySerializerTestCase(TestCase):
 
     def test_serializer_accepts_valid_data(self):
         data = {
-            "title": "Eletrônicos",
-            "slug": "eletronicos",
-            "description": "Categoria de produtos eletrônicos",
+            "title": "Tecnologia da Informação",
+            "slug": "Informática",
+            "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
             "active": True,
         }
         serializer = CategorySerializer(data=data)
@@ -16,8 +16,8 @@ class CategorySerializerTestCase(TestCase):
 
     def test_serializer_requires_title(self):
         data = {
-            "slug": "eletronicos",
-            "description": "Categoria de produtos eletrônicos",
+            "slug": "Informática",
+            "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
             "active": True,
         }
         serializer = CategorySerializer(data=data)
@@ -26,8 +26,9 @@ class CategorySerializerTestCase(TestCase):
 
     def test_serializer_requires_slug_is_optional(self):
         data = {
-            "title": "Eletrônicos",
-            "description": "Categoria de produtos eletrônicos",
+
+            "title": "Tecnologia da Informação",
+            "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
             "active": True,
         }
         serializer = CategorySerializer(data=data)
