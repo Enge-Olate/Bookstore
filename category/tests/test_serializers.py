@@ -33,7 +33,7 @@ class CategorySerializerTestCase(TestCase):
         }
         self.serializer = CategorySerializer(data=data)
         self.assertTrue(self.serializer.is_valid())
-        
+
     def test_serializer_has_expected_fields(self):
         self.serializer = CategorySerializer()
         expected_fields = {"id", "title", "slug", "description", "active"}
@@ -94,10 +94,13 @@ class CategorySerializerTestCase(TestCase):
             "title": "Tecnologia da Informação",
             "slug": "Informatica",
             "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
+
+            "active": "sim"
         }
         self.serializer = CategorySerializer(data=data)
         self.assertFalse(self.serializer.is_valid())
         self.assertIn("active", self.serializer.errors)
+
     def test_serializer_returns_expected_data(self):
         category = Category.objects.create(
             title="Tecnologia da Informação",
