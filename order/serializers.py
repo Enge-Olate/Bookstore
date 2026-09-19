@@ -1,11 +1,14 @@
 from rest_framework import serializers
-
+from django.contrib.auth import get_user_model
 from product.models import Product
 from .models import Order, OrderItem
 
+User = get_user_model()
 
 class OrderSerializer(serializers.ModelSerializer):
-    user = serializers.IntegerField(required=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=True)
+    
+    
     product = serializers.ListField(
         child=serializers.IntegerField(min_value=1),
         required=True,
@@ -17,7 +20,8 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ["id", "user", "product", "quantity", "total", "status"]
-
+        
+    
     def to_internal_value(self, data):
         data = data.copy()
         if "status" in data and isinstance(data["status"], str):
@@ -60,6 +64,7 @@ class OrderSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     order = serializers.PrimaryKeyRelatedField(queryset=Order.objects.all())
     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+    quantity = serializers.IntegerField(min_value=1, required=True)
 
     class Meta:
         model = OrderItem
@@ -91,3 +96,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
                 "O item do pedido deve estar associado a uma ordem de pedido."
             )
         return value
+    
+    def validate(self, attrs):
+        expected_subtotal = attrs["unit_price"] * attrs["quantity"]
+        
+        if attrs["subtotal"] != expected_subtotal:
+            raise serializers.ValidationError(
+                "O subtotal não corresponde ao preço unitário multiplicado pela quantidade."
+            )
+        return attrs
