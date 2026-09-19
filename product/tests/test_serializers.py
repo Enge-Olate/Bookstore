@@ -21,7 +21,7 @@ class ProductSerializerTestCase(TestCase):
 
     def test_serializer_requires_title(self):
 
-        category = Category.objects.create(title = "Informática")
+        category = Category.objects.create(title="Informática")
         data = {
             "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
             "price": "280.00",
@@ -72,12 +72,12 @@ class ProductSerializerTestCase(TestCase):
         serializer = ProductSerializer(data=data)
         self.assertFalse(serializer.is_valid())
         self.assertIn("category", serializer.errors)
-        
+
     def test_serializer_has_expected_fields(self):
         self.serializer = ProductSerializer()
-        expected_fields = {"id", "title", "description", "price", "active", "category"} 
+        expected_fields = {"id", "title", "description", "price", "active", "category"}
         self.assertEqual(set(self.serializer.fields.keys()), expected_fields)
-        
+
     def test_serializer_reject_empty_title(self):
         category = Category.objects.create(title="Tecnologia da Informação")
         data = {
@@ -90,8 +90,7 @@ class ProductSerializerTestCase(TestCase):
         self.serializer = ProductSerializer(data=data)
         self.assertFalse(self.serializer.is_valid())
         self.assertIn("title", self.serializer.errors)
-        
-    
+
     def test_serializer_rejects_null_title(self):
         data = {
             "title": None,
@@ -104,8 +103,7 @@ class ProductSerializerTestCase(TestCase):
 
         self.assertFalse(serializer.is_valid())
         self.assertIn("title", serializer.errors)
-        
-    
+
     def test_serializer_requires_category(self):
         data = {
             "title": "Livro",
@@ -119,8 +117,7 @@ class ProductSerializerTestCase(TestCase):
 
         self.assertFalse(serializer.is_valid())
         self.assertIn("category", serializer.errors)
-        
-    
+
     def test_serializer_missing_category(self):
         data = {
             "title": "Livro",
@@ -133,8 +130,7 @@ class ProductSerializerTestCase(TestCase):
 
         self.assertFalse(serializer.is_valid())
         self.assertIn("category", serializer.errors)
-            
-    
+
     def test_serializer_rejects_non_numeric_price(self):
         category = Category.objects.create(title="Tecnologia da Informação")
         data = {
@@ -147,31 +143,29 @@ class ProductSerializerTestCase(TestCase):
         serializer = ProductSerializer(data=data)
         self.assertFalse(serializer.is_valid())
         self.assertIn("price", serializer.errors)
-        
     def test_serializer_rejects_price_null(self):
         category = Category.objects.create(title="Tecnologia da Informação")
         data = {
             "title": "A cor dos Dados",
             "description": "Editora Novatec, 2019. 1ª edição. 256 páginas.",
-            "price": None, 
+            "price": None,
             "active": True,
             "category": [category.pk],
         }
         serializer = ProductSerializer(data=data)
         self.assertFalse(serializer.is_valid())
         self.assertIn("price", serializer.errors)
-        
-        
+
     def test_serializer_return_expected_data(self):
-        category = Category.objects.create(title = "TI")
+        category = Category.objects.create(title="TI")
         product = Product.objects.create(
-            title = "A Cor dos Dados",
-            description = "Editora Novatec, 2019. 1ª edição. 256 páginas.",
-            price = "280.00",
-            active = True,
+            title="A Cor dos Dados",
+            description="Editora Novatec, 2019. 1ª edição. 256 páginas.",
+            price="280.00",
+            active=True,
         )
         product.category.add(category)
-        
+
         self.serializer = ProductSerializer(product)
         self.assertEqual(self.serializer.data["title"], product.title)
         self.assertEqual(self.serializer.data["description"], product.description)
