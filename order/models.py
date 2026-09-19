@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 
 
-
 class Order(models.Model):
     STATUS_CHOICES = [
         ("pending", "Pendente"),
@@ -27,5 +26,3 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.id} - {self.user.username} - {self.status}"
-
-

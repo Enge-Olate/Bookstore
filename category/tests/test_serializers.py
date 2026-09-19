@@ -2,6 +2,7 @@ from django.test import TestCase
 from ..models import Category
 from ..serializers import CategorySerializer
 
+
 class CategorySerializerTestCase(TestCase):
 
     def test_serializer_accepts_valid_data(self):
@@ -26,7 +27,6 @@ class CategorySerializerTestCase(TestCase):
 
     def test_serializer_allows_missing_slug(self):
         data = {
-
             "title": "Tecnologia da Informação",
             "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
             "active": True,
@@ -38,7 +38,6 @@ class CategorySerializerTestCase(TestCase):
         self.serializer = CategorySerializer()
         expected_fields = {"id", "title", "slug", "description", "active"}
         self.assertEqual(set(self.serializer.fields.keys()), expected_fields)
-
 
     def test_serializer_create_object(self):
         data = {
@@ -55,8 +54,6 @@ class CategorySerializerTestCase(TestCase):
         self.assertEqual(category.slug, data["slug"])
         self.assertEqual(category.description, data["description"])
         self.assertEqual(category.active, data["active"])
-        
-    
     def test_serializer_reject_empty_title(self):
         data = {
             "title": "",
@@ -67,44 +64,40 @@ class CategorySerializerTestCase(TestCase):
         self.serializer = CategorySerializer(data=data)
         self.assertFalse(self.serializer.is_valid())
         self.assertIn("title", self.serializer.errors)
-    
+
     def test_serializer_rejects_null_title(self):
-            data = {
-                "title": None,
-                "slug": "informatica",
-                "description": "Descrição",
-                "active": True,
-            }
-    
-            serializer = CategorySerializer(data=data)
-    
-            self.assertFalse(serializer.is_valid())
-            self.assertIn("title", serializer.errors)
-    
-        
+        data = {
+            "title": None,
+            "slug": "informatica",
+            "description": "Descrição",
+            "active": True,
+        }
+
+        serializer = CategorySerializer(data=data)
+
+        self.assertFalse(serializer.is_valid())
+        self.assertIn("title", serializer.errors)
+
     def test_serializer_slug_invalid_characters(self):
         data = {
             "title": "Tecnologia da Informação",
-            "slug": "Informática@#$%", 
+            "slug": "Informática@#$%",
             "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
             "active": True,
         }
         self.serializer = CategorySerializer(data=data)
         self.assertFalse(self.serializer.is_valid())
         self.assertIn("slug", self.serializer.errors)
-        
+
     def test_serializer_active_field_must_be_boolean(self):
         data = {
             "title": "Tecnologia da Informação",
             "slug": "Informatica",
             "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
-            "active": "sim",  
         }
         self.serializer = CategorySerializer(data=data)
         self.assertFalse(self.serializer.is_valid())
         self.assertIn("active", self.serializer.errors)
-        
-        
     def test_serializer_returns_expected_data(self):
         category = Category.objects.create(
             title="Tecnologia da Informação",

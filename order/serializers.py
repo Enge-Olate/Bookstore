@@ -5,19 +5,20 @@ from .models import Order
 
 User = get_user_model()
 
+
 class OrderSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=True)
-    
-    
-    
+
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=True
+    )
+
     quantity = serializers.IntegerField(min_value=1, required=True)
     status = serializers.CharField(required=True)
 
     class Meta:
         model = Order
         fields = ["id", "user", "quantity", "total", "status"]
-        
-    
+
     def to_internal_value(self, data):
         data = data.copy()
         if "status" in data and isinstance(data["status"], str):
@@ -32,7 +33,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def validate_product(self, value):
         if not value:
-            raise serializers.ValidationError("O pedido deve ter pelo menos um produto.")
+            raise serializers.ValidationError(
+                "O pedido deve ter pelo menos um produto."
+            )
         return value
 
     def validate_total(self, value):
@@ -55,5 +58,3 @@ class OrderSerializer(serializers.ModelSerializer):
             )
 
         return status_map[value]
-
-
