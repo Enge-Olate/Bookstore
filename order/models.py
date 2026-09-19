@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.db import models
 
-from product.models import Product
 
 
 class Order(models.Model):
@@ -29,24 +28,3 @@ class Order(models.Model):
         return f"Order {self.id} - {self.user.username} - {self.status}"
 
 
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE)
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.PROTECT,
-        related_name="order_items",
-    )
-    quantity = models.PositiveIntegerField(default=1)
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
-    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-
-    class Meta:
-        unique_together = ("order", "product")
-        ordering = ["id"]
-
-    def save(self, *args, **kwargs):
-        self.subtotal = self.unit_price * self.quantity
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.product.title} x {self.quantity}"
