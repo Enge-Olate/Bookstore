@@ -11,3 +11,8 @@ def validate_description(value):
             "A descrição não pode ter mais de 500 caracteres."
         )
     return value
+
+def validate_title_null(value):
+    if value is None:
+        raise serializers.ValidationError("O título não pode ser nulo.")
+    return value
