@@ -18,7 +18,7 @@ dependencies = [
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "bookstore.settings"
-python_files = ["test*_.py", "*_test.py", "test.py"]
+python_files = ["test_*.py", "*_test.py", "test.py"]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
