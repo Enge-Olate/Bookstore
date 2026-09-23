@@ -85,9 +85,11 @@ class OrderSerializerTestCase(TestCase):
 
     def test_serializer_return_expected_data(self):
         user = User.objects.create(username="adm", password="123")
+        products = Product.objects.create(title = "livros")
         order = Order.objects.create(
             user=user, quantity=30, total="300.00", status="cancelado"
         )
+        order.products.add(products)
         self.serializer = OrderSerializer(order)
         self.assertEqual(self.serializer.data["user"], order.id)
         self.assertEqual(self.serializer.data["quantity"], order.quantity)
