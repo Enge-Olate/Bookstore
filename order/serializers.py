@@ -17,7 +17,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ["id", "user", "quantity", "total", "status"]
+        fields = ["id", "user", "quantity", "total", "status", "products"]
 
     def to_internal_value(self, data):
         data = data.copy()
