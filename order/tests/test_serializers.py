@@ -91,7 +91,7 @@ class OrderSerializerTestCase(TestCase):
         )
         order.products.add(products)
         self.serializer = OrderSerializer(order)
-        self.assertEqual(self.serializer.data["user"], order.id)
+        self.assertEqual(self.serializer.data["user"], order.user_id)
         self.assertEqual(self.serializer.data["quantity"], order.quantity)
         self.assertEqual(self.serializer.data["total"], order.total)
         self.assertEqual(self.serializer.data["status"], order.status)
