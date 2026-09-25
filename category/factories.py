@@ -1,10 +1,18 @@
 import factory
+
+from django.utils.text import slugify
 from .models import Category
-from serializers import CategorySerializer
 
 class CategoryFactories(factory.django.DjangoModelFactory):
     class Meta:
-        category = Category.title
+        model = Category
+        django_get_or_create = ("slug",)
     
-    title = "livros"
-        
+    title = factory.Faker("catch_phrase")    
+    description = factory.Faker("text", max_nb_chars=200)
+    active = True
+
+
+    @factory.lazy_attribute
+    def slug(self):
+        return slugify(self.title)    
