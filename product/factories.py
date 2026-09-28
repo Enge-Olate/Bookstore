@@ -11,7 +11,7 @@ class ProductFactories(factory.django.DjangoModelFactory):
 
     title = factory.Faker("word")
     description = factory.Faker("text", max_nb_chars=200)
-    price = Decimal("29.90")
+    price = Decimal('0')
     active = True
 
     @factory.post_generation

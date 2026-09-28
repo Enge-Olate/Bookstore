@@ -81,3 +81,6 @@ class CategoryViewSetTestCase(APITestCase):
         
         # Garante que a categoria foi apagada do banco
         self.assertEqual(Category.objects.count(), 0)
+        
+                         
+                        
