@@ -4,20 +4,18 @@ from ..models import Order
 from ..serializers import OrderSerializer, User
 from product.models import Product
 
+
 class OrderSerializerTestCase(TestCase):
 
     def test_serializer_user_exists(self):
         user = User.objects.create_user(username="testuser", password="testpass")
-        product = Product.objects.create(
-            title="livro",
-            price = 50.00
-        )
+        product = Product.objects.create(title="livro", price=50.00)
         data = {
             "user": user.pk,
             "quantity": 2,
             "total": 100.00,
             "status": "Pendente",
-            "products":[product.pk]
+            "products": [product.pk],
         }
         self.serializer = OrderSerializer(data=data)
         self.assertTrue(self.serializer.is_valid(), self.serializer.errors)
@@ -38,7 +36,6 @@ class OrderSerializerTestCase(TestCase):
         self.serializer = OrderSerializer(data=data)
         self.assertFalse(self.serializer.is_valid())
         self.assertIn("user", self.serializer.errors)
-
 
     def test_serializer_quantity_must_be_positive(self):
         user = User.objects.create_user(username="testuser", password="testpass")
@@ -85,7 +82,7 @@ class OrderSerializerTestCase(TestCase):
 
     def test_serializer_return_expected_data(self):
         user = User.objects.create(username="adm", password="123")
-        products = Product.objects.create(title = "livros")
+        products = Product.objects.create(title="livros")
         order = Order.objects.create(
             user=user, quantity=30, total="300.00", status="cancelado"
         )
@@ -95,16 +92,10 @@ class OrderSerializerTestCase(TestCase):
         self.assertEqual(self.serializer.data["quantity"], order.quantity)
         self.assertEqual(self.serializer.data["total"], order.total)
         self.assertEqual(self.serializer.data["status"], order.status)
-        
+
     def test_serializer_requires_product(self):
-        user = User.objects.create(username="admin", password='3221')
-        data = {
-            "user": user.pk,
-            "quantity": 400,
-            "total": 600.00,
-            "status": "Pago"
-        }
-        self.serializer = OrderSerializer(data = data)
+        user = User.objects.create(username="admin", password="3221")
+        data = {"user": user.pk, "quantity": 400, "total": 600.00, "status": "Pago"}
+        self.serializer = OrderSerializer(data=data)
         self.assertFalse(self.serializer.is_valid())
-        self.assertIn('products', self.serializer.errors)
-        
+        self.assertIn("products", self.serializer.errors)
