@@ -3,7 +3,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from product.factories import ProductFactories
-from ..factories import UserFactory
+
+from ..factories import OrderFactories, UserFactory
 from ..models import Order
 
 
