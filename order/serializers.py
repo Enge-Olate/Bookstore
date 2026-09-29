@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from product.models import Product
 
 from .models import Order
 
@@ -10,6 +11,11 @@ class OrderSerializer(serializers.ModelSerializer):
 
     user = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=True
+    )
+    products = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Product.objects.all(),
+        allow_empty=True,
     )
 
     quantity = serializers.IntegerField(min_value=1, required=True)
@@ -31,7 +37,7 @@ class OrderSerializer(serializers.ModelSerializer):
             data["status"] = status_map.get(data["status"], data["status"])
         return super().to_internal_value(data)
 
-    def validate_product(self, value):
+    def validate_products(self, value):
         if not value:
             raise serializers.ValidationError(
                 "O pedido deve ter pelo menos um produto."

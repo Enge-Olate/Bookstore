@@ -1,7 +1,6 @@
 import factory
 from decimal import Decimal
 from .models import Product
-from category.factories import CategoryFactories
 
 
 class ProductFactories(factory.django.DjangoModelFactory):
@@ -11,7 +10,7 @@ class ProductFactories(factory.django.DjangoModelFactory):
 
     title = factory.Faker("word")
     description = factory.Faker("text", max_nb_chars=200)
-    price = Decimal('0')
+    price = Decimal("1.00")
     active = True
 
     @factory.post_generation
@@ -19,8 +18,4 @@ class ProductFactories(factory.django.DjangoModelFactory):
         if not create:
             return
         if extracted:
-            for cat in extracted:
-                self.category.add(cat)
-        else:
-            pass
-
+            self.category.add(*extracted)
