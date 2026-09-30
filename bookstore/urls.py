@@ -17,12 +17,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, re_path, include
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("bookstore/", include('product.urls')),
+    path("bookstore/", include('category.urls')),
     re_path('bookstore/(?P<version>(v1|v2))', include('order.urls')),
     re_path('bookstore/(?P<version>(v1|v2))', include('product.urls')),
     re_path('bookstore/(?P<version>(v1|v2))', include('category.urls')),
-    path("bookstore/", include('category.urls')),
-    path("bookstore/", include('product.urls'))
-]
+]+ debug_toolbar_urls()
