@@ -2,6 +2,12 @@ FROM python:3.13-slim AS python-base
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 
+
+RUN apt-get update \
+    && apt-get install -y libpq-dev gcc \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --upgrade pip \
+    && pip install psycopg2
     
 WORKDIR /app
 
