@@ -27,6 +27,11 @@ class ProductSerializer(serializers.ModelSerializer):
             )
         return value
 
+    def validate_title_null(self, value):
+        if value is None:
+            raise serializers.ValidationError("O título não pode ser nulo.")
+        return value
+
     def validate_price(self, value):
         if value is None:
             raise serializers.ValidationError("O preço não pode ser nulo.")
@@ -36,6 +41,19 @@ class ProductSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "O preço deve ser maior que zero e não pode ultrapassar 999999.99."
             )
+        return value
+
+
+        return value
+
+    def validate_price_not_alphanumeric(self, value):
+        if not isinstance(value, (int, float)):
+            raise serializers.ValidationError("O preço deve ser um número.")
+        return value
+
+    def validate_decimal_price(self, value):
+        if value is not None and (value < 0 or value > 999999.99):
+            raise serializers.ValidationError("O preço deve estar entre 0 e 999999.99.")
         return value
 
     def validate_category(self, value):
