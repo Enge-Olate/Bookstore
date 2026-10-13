@@ -14,10 +14,8 @@ class CategoryViewSetTestCase(APITestCase):
         # Faz uma requisição GET para a rota de listagem
         url = reverse("category-list")
         response = self.client.get(url)
-
-        # Verifica se a requisição foi um sucesso e se retornou as 5 categorias
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 5)
+        self.assertEqual(len(response.data['results']), 5)
 
     def test_retrieve_category(self):
         # Cria uma única categoria no banco
