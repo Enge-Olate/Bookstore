@@ -9,15 +9,25 @@ class CategoryViewSetTestCase(APITestCase):
 
     def test_list_categories(self):
         # Gera 5 categorias de uma só vez e salva no banco de dados de teste
+<<<<<<< HEAD
         CategoryFactories.create_batch(5)
 
+=======
+        CategoryFactories.create_batch(10)
+        
+>>>>>>> origin/docker_network
         # Faz uma requisição GET para a rota de listagem
         url = reverse("category-list")
         response = self.client.get(url)
+<<<<<<< HEAD
 
         # Verifica se a requisição foi um sucesso e se retornou as 5 categorias
+=======
+        
+        # Verifica se a requisição foi um sucesso e se retornou as 10 categorias
+>>>>>>> origin/docker_network
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 5)
+        self.assertEqual(len(response.data['results']), 10)
 
     def test_retrieve_category(self):
         # Cria uma única categoria no banco

@@ -17,9 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, re_path, include
+from rest_framework.authtoken.views import obtain_auth_token
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+<<<<<<< HEAD
     re_path("bookstore/(?P<version>(v1|v2))", include("order.urls")),
     re_path("bookstore/(?P<version>(v1|v2))", include("product.urls")),
     re_path("bookstore/(?P<version>(v1|v2))", include("category.urls")),
@@ -27,3 +30,13 @@ urlpatterns = [
     path("bookstore/", include("product.urls")),
     path("bookstore/", include("order.urls")),
 ]
+=======
+    path("api-token-auth/", obtain_auth_token, name='api_token_auth'),
+    path("bookstore/", include('order.urls')),
+    path("bookstore/", include('product.urls')),
+    path("bookstore/", include('category.urls')),
+    re_path('bookstore/(?P<version>(v1|v2))', include('order.urls')),
+    re_path('bookstore/(?P<version>(v1|v2))', include('product.urls')),
+    re_path('bookstore/(?P<version>(v1|v2))', include('category.urls')),
+]+ debug_toolbar_urls()
+>>>>>>> origin/docker_network
