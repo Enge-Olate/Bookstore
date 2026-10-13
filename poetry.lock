@@ -407,4 +407,8 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
+<<<<<<< HEAD
 content-hash = "3e0d1844437e8a685e1daa5e1cc99db5e8122b9d2d9d2f43d55dfb4144b452f9"
+=======
+content-hash = "46745071906affc0487d49b1042bca695850e972e39d15b2b1642b75ab420a2b"
+>>>>>>> serializer-tests

@@ -143,7 +143,10 @@ class ProductSerializerTestCase(TestCase):
         serializer = ProductSerializer(data=data)
         self.assertFalse(serializer.is_valid())
         self.assertIn("price", serializer.errors)
+<<<<<<< HEAD
 
+=======
+>>>>>>> serializer-tests
     def test_serializer_rejects_price_null(self):
         category = Category.objects.create(title="Tecnologia da Informação")
         data = {
