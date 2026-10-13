@@ -14,6 +14,10 @@ class CategoryViewSetTestCase(APITestCase):
         # Faz uma requisição GET para a rota de listagem
         url = reverse("category-list")
         response = self.client.get(url)
+        
+        # Faz uma requisição GET para a rota de listagem
+        url = reverse("category-list")
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 5)
 
