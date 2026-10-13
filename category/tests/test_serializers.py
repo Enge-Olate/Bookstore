@@ -54,10 +54,6 @@ class CategorySerializerTestCase(TestCase):
         self.assertEqual(category.slug, data["slug"])
         self.assertEqual(category.description, data["description"])
         self.assertEqual(category.active, data["active"])
-<<<<<<< HEAD
-
-=======
->>>>>>> serializer-tests
     def test_serializer_reject_empty_title(self):
         data = {
             "title": "",
@@ -98,12 +94,7 @@ class CategorySerializerTestCase(TestCase):
             "title": "Tecnologia da Informação",
             "slug": "Informatica",
             "description": "Editora O'Reilly, 2019. 1ª edição. 300 páginas.",
-<<<<<<< HEAD
             "active": "sim",
-=======
-
-            "active": "sim"
->>>>>>> serializer-tests
         }
         self.serializer = CategorySerializer(data=data)
         self.assertFalse(self.serializer.is_valid())
