@@ -115,8 +115,8 @@ jobs:
       - name: Instalar dependências
         run: poetry install --with dev --no-interaction --no-root
 
-      - name: Verificar qualidade do código com flake8
-        run: poetry run flake8 .
+      - name: Verificar qualidade do código com black
+        run: poetry run black --check .
 
       - name: Run security scanner
         uses: aquasecurity/trivy-action@master
