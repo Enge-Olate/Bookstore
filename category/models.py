@@ -8,7 +8,7 @@ class Category(models.Model):
     active = models.BooleanField(default=True)
 
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     def __unicode__(self):
         return self.title

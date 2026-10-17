@@ -43,7 +43,6 @@ class ProductSerializer(serializers.ModelSerializer):
             )
         return value
 
-
         return value
 
     def validate_price_not_alphanumeric(self, value):
