@@ -90,7 +90,8 @@ jobs:
 
       - name: Construir imagem
         run: docker build --tag bookstore:${{ github.sha }} .
-  code quality:
+        
+  code-quality:
     name: Checar qualidade do código
     needs: test
     runs-on: ubuntu-latest
