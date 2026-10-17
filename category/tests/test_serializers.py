@@ -54,6 +54,7 @@ class CategorySerializerTestCase(TestCase):
         self.assertEqual(category.slug, data["slug"])
         self.assertEqual(category.description, data["description"])
         self.assertEqual(category.active, data["active"])
+
     def test_serializer_reject_empty_title(self):
         data = {
             "title": "",

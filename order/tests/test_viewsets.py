@@ -62,7 +62,13 @@ class OrderViewSetTestCase(APITestCase):
 
     def test_update_order(self):
         product = ProductFactories.create()
-        order = OrderFactories.create(user=self.user, quantity=1, total=10.00, status="pending", products=[product])
+        order = OrderFactories.create(
+            user=self.user,
+            quantity=1,
+            total=10.00,
+            status="pending",
+            products=[product],
+        )
 
         payload = {"quantity": 3, "status": "Pago"}
         url = reverse("order-detail", kwargs={"pk": order.pk})
