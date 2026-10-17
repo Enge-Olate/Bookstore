@@ -80,6 +80,7 @@ jobs:
 
   build:
     name: Build Docker Image
+    needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -89,6 +90,41 @@ jobs:
 
       - name: Construir imagem
         run: docker build --tag bookstore:${{ github.sha }} .
+        
+  code-quality:
+    name: Checar qualidade do código
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
 
-      
-      
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+
+
+      - name: Instalar Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Instalar Poetry
+        run: python -m pip install --upgrade pip poetry
+
+      - name: Instalar dependências
+        run: poetry install --with dev --no-interaction --no-root
+
+      - name: Verificar qualidade do código com black
+        run: poetry run black --check .
+
+      - name: Run security scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          ignore-unfixed: true
+          format: "table"
+          exit-code: "1"
+          severity: "CRITICAL,HIGH,MEDIUM"
+          
+          
