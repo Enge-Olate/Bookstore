@@ -25,4 +25,4 @@ db.sqlite3-journal
 *.swp
 
 # Arquivos de variáveis de ambiente (Segurança)
-.env
+#.env
