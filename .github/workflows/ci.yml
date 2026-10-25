@@ -90,5 +90,66 @@ jobs:
       - name: Construir imagem
         run: docker build --tag bookstore:${{ github.sha }} .
 
-      
-      
+  deploy:
+    name: Deploy PythonAnywhere
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs:
+      - test
+      - build
+    if: >-
+      github.event_name == 'push' &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    concurrency:
+      group: pythonanywhere-production
+      cancel-in-progress: false
+    env:
+      PA_USERNAME: ${{ vars.PYTHONANYWHERE_USERNAME }}
+      PA_PROJECT_PATH: ${{ vars.PYTHONANYWHERE_PROJECT_PATH }}
+      PA_VENV_PATH: ${{ vars.PYTHONANYWHERE_VENV_PATH }}
+      PA_WSGI_FILE: ${{ vars.PYTHONANYWHERE_WSGI_FILE }}
+      PA_SSH_PRIVATE_KEY: ${{ secrets.PYTHONANYWHERE_SSH_KEY }}
+      PA_KNOWN_HOSTS: ${{ secrets.PYTHONANYWHERE_KNOWN_HOSTS }}
+
+    steps:
+      - name: Validar configuração de deploy
+        run: |
+          if [ -z "$PA_USERNAME" ] || [ -z "$PA_PROJECT_PATH" ] || \
+             [ -z "$PA_VENV_PATH" ] || [ -z "$PA_WSGI_FILE" ] || \
+             [ -z "$PA_SSH_PRIVATE_KEY" ] || [ -z "$PA_KNOWN_HOSTS" ]; then
+            echo "::error::Configure todas as variáveis e secrets do PythonAnywhere no GitHub."
+            exit 1
+          fi
+
+      - name: Configurar acesso SSH
+        run: |
+          install -m 700 -d "$HOME/.ssh"
+          printf '%s\n' "$PA_SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$PA_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Atualizar aplicação no PythonAnywhere
+        env:
+          DEPLOY_BRANCH: ${{ github.ref_name }}
+        run: |
+          remote_command="$(printf '%q ' bash -s -- "$PA_PROJECT_PATH" "$PA_VENV_PATH" "$PA_WSGI_FILE" "$DEPLOY_BRANCH")"
+          ssh -i "$HOME/.ssh/id_ed25519" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            "$PA_USERNAME@ssh.pythonanywhere.com" \
+            "$remote_command" <<'REMOTE_SCRIPT'
+          set -euo pipefail
+          project_path=$1
+          venv_path=$2
+          wsgi_file=$3
+          deploy_branch=$4
+
+          cd "$project_path"
+          git pull --ff-only origin "$deploy_branch"
+          source "$venv_path/bin/activate"
+          python -m pip install --upgrade poetry
+          poetry install --only main --no-root --no-interaction
+          python manage.py migrate --noinput
+          python manage.py collectstatic --noinput
+          touch "$wsgi_file"
+          REMOTE_SCRIPT

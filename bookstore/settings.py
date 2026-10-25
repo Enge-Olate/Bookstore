@@ -32,7 +32,7 @@ if not SECRET_KEY:
         raise ImproperlyConfigured("The SECRET_KEY environment variable must be set.")
     SECRET_KEY = get_random_secret_key()
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 
 # Application definition
@@ -135,6 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # Email
