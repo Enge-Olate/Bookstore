@@ -32,7 +32,7 @@ if not SECRET_KEY:
         raise ImproperlyConfigured("The SECRET_KEY environment variable must be set.")
     SECRET_KEY = get_random_secret_key()
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*", "olate.pythonanywhere.com"]
 
 
 # Application definition
