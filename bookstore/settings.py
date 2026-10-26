@@ -15,10 +15,12 @@ import os
 
 from django.core.exceptions import ImproperlyConfigured
 from django.core.management.utils import get_random_secret_key
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
@@ -64,7 +66,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "bookstore.urls"
 
 if DEBUG:
-    INSTALLED_APPS=[
+    INSTALLED_APPS+=[
         "django_extensions",
         "debug_toolbar",
     ]
