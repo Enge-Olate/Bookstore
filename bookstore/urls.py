@@ -18,7 +18,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from rest_framework.authtoken.views import obtain_auth_token
-from debug_toolbar.toolbar import debug_toolbar_urls
 from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -32,4 +31,5 @@ urlpatterns = [
 ] 
 
 if settings.DEBUG:
+    from debug_toolbar.toolbar import debug_toolbar_urls
     urlpatterns += [path("__debug__/", include(debug_toolbar_urls))]
